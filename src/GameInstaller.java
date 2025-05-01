@@ -28,19 +28,18 @@ public class GameInstaller {
 
 
 
-    public GameInstaller(String basePath) {
+    public GameInstaller(String basePath, Logger logger) {
         this.basePath = basePath;
-        this.logger = new Logger();
+        this.logger = logger;
     }
 
     // Основной метод установки
     public void install() {
         createDirectories(folders);
         createFiles(files);
-        logger.saveToFile(basePath + "/temp/temp.txt");
     }
 
-    // Создает ОДИН каталог
+    // Создает каталог
     private void createOneDirectory(String path) {
         File dir = new File(basePath, path);
         if (dir.mkdir()) {
@@ -57,17 +56,17 @@ public class GameInstaller {
         }
     }
 
-    // Создает ОДИН файл
+    // Создает файл
     private void createOneFile(String fileName) {
         File file = new File(basePath, fileName);
         try {
             if (file.createNewFile()) {
                 logger.logSuccess("Файл создан: " + file.getPath());
             } else {
-                logger.logFail("уже существует или не удалось создать: " + file.getPath());
+                logger.logFail("Файл уже существует или не удалось создать: " + file.getPath());
             }
         } catch (IOException exception) {
-            logger.logError("Ошибка при создании файла ", exception);
+            logger.logError("Ошибка при создании файла " + file.getPath(), exception);
         }
     }
 
